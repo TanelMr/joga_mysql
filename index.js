@@ -1,19 +1,20 @@
 //define packages
 const express = require ('express');
-const path = require("path");
 const app = express ();
-const bodyparser = require('body-parser');
 
-//public directory
-app.use(express.static('public'));
-
-//add views template engine
-//app.set('view engine', 'ejs');
-
+const path = require("path");
+const hbs = require('express-handlebars');
 //add views directory path
 app.set('views', path.join(__dirname, 'views'));
+//add views template engine
+app.set('view engine', hbs.engine({
+    extname: 'hbs',
+    defaultLayout: 'main',
+    layoutsDir:__dirname + '/views/layouts'
+}));
 
 //use bodyparser
+const bodyparser = require('body-parser');
 app.use(bodyparser.urlencoded({extended:true}));
 
 //mysql
@@ -28,7 +29,7 @@ const con = mysql.createConnection({
 
 con.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
+    console.log("Connected to database joga_mysql");
 });
 
 //listen on port 3000
