@@ -1,6 +1,8 @@
 //define packages
 const express = require ('express');
 const app = express ();
+const mysql = require('mysql');
+
 
 const path = require("path");
 const hbs = require('express-handlebars');
@@ -12,15 +14,15 @@ app.set('view engine', hbs.engine({
     defaultLayout: 'main',
     layoutsDir:__dirname + '/views/layouts'
 }));
+//setup static public directory
+app.use(express.static('public'));
 
 //use bodyparser
 const bodyparser = require('body-parser');
 app.use(bodyparser.urlencoded({extended:true}));
 
 //mysql
-const mysql = require('mysql');
-
-const con = mysql.createConnection({
+var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "qwerty",
