@@ -21,31 +21,13 @@ const bodyparser = require('body-parser');
 app.use(bodyparser.urlencoded({extended:true}));
 
 //import article route
-const articleRoutes = require('./routes/article')
+const articleRoutes = require('./routes/article');
+const authorRoutes = require('./routes/author');
 
 //use routes
 app.use('/', articleRoutes);
 app.use('/article',articleRoutes);
-
-//author article controller
-app.get('/author/:author_id', (req, res) => {
-    let query1 = `SELECT * FROM article WHERE author_id = "${req.params.author_id}"`;
-    let query2 = `SELECT id, name as authorName from author where id = "${req.params.author_id}"`;
-    let author;
-    let article;
-    con.query(query1 , (err,result) => {
-        if (err) throw err;
-        article = result;
-        con.query(query2 , (err,result) => {
-            if (err) throw err;
-            author = result;
-        res.render('author', {
-            author: author,
-            article: article
-            });
-        });
-    });
-});
+app.use('/author', authorRoutes);
 
 //listen on port 3000
 app.listen(3000, () => {
